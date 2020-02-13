@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="storiesCollectionViewCell" id="gTV-IL-0wX" customClass="StoriesCollectionViewCell" customModule="Stories" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="64" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="64" height="88"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ICF-Nz-z7v" userLabel="Border View">
+                        <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Srt-ef-1f7">
+                                <rect key="frame" x="2" y="2" width="60" height="60"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="IzO-kQ-a00" userLabel="Add Story Button">
+                                <rect key="frame" x="42" y="42.5" width="20" height="19"/>
+                                <color key="tintColor" name="highlightColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="IzO-kQ-a00" secondAttribute="height" multiplier="1:1" id="Fss-t7-Kg9"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Srt-ef-1f7" firstAttribute="leading" secondItem="ICF-Nz-z7v" secondAttribute="leading" constant="2" id="4xU-3B-TRW"/>
+                            <constraint firstAttribute="width" secondItem="ICF-Nz-z7v" secondAttribute="height" multiplier="1:1" id="Akv-Nf-v0p"/>
+                            <constraint firstItem="IzO-kQ-a00" firstAttribute="bottom" secondItem="Srt-ef-1f7" secondAttribute="bottom" id="Eu2-l4-97K"/>
+                            <constraint firstItem="Srt-ef-1f7" firstAttribute="top" secondItem="ICF-Nz-z7v" secondAttribute="top" constant="2" id="Ljr-6i-fbO"/>
+                            <constraint firstAttribute="trailing" secondItem="Srt-ef-1f7" secondAttribute="trailing" constant="2" id="N1X-Xg-rUj"/>
+                            <constraint firstItem="IzO-kQ-a00" firstAttribute="height" secondItem="Srt-ef-1f7" secondAttribute="height" multiplier="0.333333" id="YDY-5j-RJ4"/>
+                            <constraint firstItem="IzO-kQ-a00" firstAttribute="trailing" secondItem="Srt-ef-1f7" secondAttribute="trailing" id="mA6-6S-SgO"/>
+                            <constraint firstAttribute="bottom" secondItem="Srt-ef-1f7" secondAttribute="bottom" constant="2" id="tWf-F3-4yK"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5b-r8-rUb">
+                        <rect key="frame" x="0.0" y="68" width="64" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="ICF-Nz-z7v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="1HB-gR-krv"/>
+                <constraint firstAttribute="trailing" secondItem="o5b-r8-rUb" secondAttribute="trailing" id="C7q-0C-Xz1"/>
+                <constraint firstItem="ICF-Nz-z7v" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="CDZ-WA-4Gg"/>
+                <constraint firstAttribute="bottom" secondItem="o5b-r8-rUb" secondAttribute="bottom" constant="4" id="UJZ-ul-U9a"/>
+                <constraint firstAttribute="trailing" secondItem="ICF-Nz-z7v" secondAttribute="trailing" id="fDY-bV-iqi"/>
+                <constraint firstItem="o5b-r8-rUb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="xNB-RO-VB9"/>
+                <constraint firstItem="o5b-r8-rUb" firstAttribute="top" secondItem="ICF-Nz-z7v" secondAttribute="bottom" constant="4" id="zBY-gn-q3v"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="80" height="116"/>
+            <connections>
+                <outlet property="addStoryButton" destination="IzO-kQ-a00" id="ygC-gQ-Zbd"/>
+                <outlet property="borderView" destination="ICF-Nz-z7v" id="34k-Nd-bxu"/>
+                <outlet property="userImageView" destination="Srt-ef-1f7" id="J8n-Fg-HuV"/>
+                <outlet property="userNicknameLabel" destination="o5b-r8-rUb" id="4cp-i9-PEe"/>
+            </connections>
+            <point key="canvasLocation" x="153.62318840579712" y="174.77678571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="plus.circle.fill" catalog="system" width="64" height="60"/>
+        <namedColor name="highlightColor">
+            <color red="0.77647058823529413" green="0.61960784313725492" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
