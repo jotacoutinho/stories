@@ -35,16 +35,12 @@ public class StoriesViewController: UIViewController {
     
     @IBOutlet weak var headerImageView: UIImageView! {
         didSet {
-            headerImageView.kf.setImage(with: URL(string: "https://miro.medium.com/max/3150/1*ppQtwFuqcxErN7yhT22PFg.png"))
+            headerImageView.contentMode = .scaleAspectFill
             headerImageView.layer.cornerRadius = headerImageView.frame.height / 2
         }
     }
     
-    @IBOutlet weak var headerLabel: UILabel! {
-        didSet {
-            headerLabel.text = "4all"
-        }
-    }
+    @IBOutlet weak var headerLabel: UILabel!
     
     @IBOutlet weak var rewindView: UIView! {
         didSet {
@@ -68,24 +64,32 @@ public class StoriesViewController: UIViewController {
     }
     
     // MARK: - Variables
-    var stories = ["https://i.ytimg.com/vi/PtS-l5c0Cvc/maxresdefault.jpg", "https://i.pinimg.com/originals/2c/61/13/2c6113a5987af70a91c5a020314af0cf.jpg", "https://i.pinimg.com/originals/90/31/78/9031789921756958892e1651a7f1999c.png"]
-    var originalFrame: CGRect
-    var changeImage = true
-    let storiesDuration: TimeInterval = 3
-    var indicatorTimer: Timer?
-    var contentTimer: Timer?
-    var currentStory: Int = 0
-    var currentStoryTime: TimeInterval = 0
-    let spacingSize: CGFloat = 8
-    var stackViewFreeSize: CGFloat = 0
-    var timerSize: CGFloat = 0
+    private var firstRun: Bool = true
+    private var stories: [String] = []
+    private var usernameLabel: String = ""
+    private var userImageUrl: String = ""
+    private var mainColor: UIColor = .white
+    private var secondaryColor: UIColor = .white
+    private var originalFrame: CGRect
+    private var storiesDuration: TimeInterval = 3
+    private var indicatorTimer: Timer?
+    private var contentTimer: Timer?
+    private var currentStory: Int = 1
+    private var currentStoryTime: TimeInterval = 0
+    private let spacingSize: CGFloat = 8
+    private var stackViewFreeSize: CGFloat = 0
+    private var timerSize: CGFloat = 0
     
     // MARK: - Life cycle
-    public init(transitioningDelegate: UIViewControllerTransitioningDelegate? = nil, stories: [String]) {
+    public init(transitioningDelegate: UIViewControllerTransitioningDelegate? = nil, stories: [String], usernameLabel: String, userImageUrl: String, mainColor: UIColor, secondaryColor: UIColor) {
         self.originalFrame = CGRect()
         super.init(nibName: "StoriesViewController", bundle: Bundle(for: type(of: self)))
         self.transitioningDelegate = transitioningDelegate
         self.stories = stories
+        self.usernameLabel = usernameLabel
+        self.userImageUrl = userImageUrl
+        self.mainColor = mainColor
+        self.secondaryColor = secondaryColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,7 +101,26 @@ public class StoriesViewController: UIViewController {
         super.viewDidLoad()
         
         //setting up first story
-        contentImageView.kf.setImage(with: URL(string: "https://i.ytimg.com/vi/PtS-l5c0Cvc/maxresdefault.jpg"))
+//        contentImageView.kf.setImage(with: URL(string: stories[0]))
+        contentImageView.kf.setImage(with: URL(string: stories[0]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
+            switch result {
+            case .success:
+                if self.firstRun {
+                    print("did set image")
+                    self.firstRun = false
+                    self.currentStoryTime = Date().timeIntervalSinceReferenceDate
+                    self.configureTimers()
+                }
+                self.initializeTimer()
+            case .failure(let error):
+                print(error)
+            }
+        }
+            
+        headerImageView.kf.setImage(with: URL(string: userImageUrl))
+        headerLabel.text = usernameLabel
+        headerLabel.textColor = mainColor
+        
         
         originalFrame = view.frame
         storiesContentView.frame = originalFrame
@@ -120,7 +143,7 @@ public class StoriesViewController: UIViewController {
     func configureStoriesIndicators() {
         stories.forEach { _ in
             let fadedIndicatorView = UIView()
-            fadedIndicatorView.backgroundColor = UIColor(red: 198/255, green: 158/255, blue: 108/255, alpha: 0.5)
+            fadedIndicatorView.backgroundColor = secondaryColor.withAlphaComponent(0.5)
             fadedIndicatorView.translatesAutoresizingMaskIntoConstraints = false
             
             fadedIndicatorView.widthAnchor.constraint(equalToConstant: timerSize).isActive = true
@@ -150,7 +173,7 @@ public class StoriesViewController: UIViewController {
     func startStoryTimerIndicator() {
         let timerIndicatorView = UIView()
         
-        timerIndicatorView.backgroundColor = UIColor(red: 198/255, green: 158/255, blue: 108/255, alpha: 1)
+        timerIndicatorView.backgroundColor = secondaryColor
         timerIndicatorView.frame = CGRect(x: CGFloat(currentStory-1) * (timerSize + 8),
                                           y: 0,
                                           width: 0,
@@ -188,7 +211,7 @@ public class StoriesViewController: UIViewController {
             for story in 1...currentStory - 1 {
                 //let width = story == currentStory - 1 ? timerSize * (CGFloat(storiesDuration) / widthScaleFactor) : timerSize
                 let timerIndicatorView = UIView()
-                timerIndicatorView.backgroundColor = UIColor(red: 198/255, green: 158/255, blue: 108/255, alpha: 1)
+                timerIndicatorView.backgroundColor = secondaryColor
                 timerIndicatorView.frame = CGRect(x: CGFloat(story - 1) * (timerSize + 8),
                                                   y: 0,
                                                   width: timerSize,
@@ -243,7 +266,20 @@ public class StoriesViewController: UIViewController {
     }
     
     func configureContentView() {
-        contentImageView.kf.setImage(with: URL(string: stories[currentStory-1]))
+        contentImageView.kf.setImage(with: URL(string: stories[currentStory-1]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
+            switch result {
+            case .success:
+//                if self.firstRun {
+//                    print("did set image")
+//                    self.firstRun = false
+//                    self.currentStoryTime = Date().timeIntervalSinceReferenceDate
+//                    self.configureTimers()
+//                }
+                self.initializeTimer()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     @objc func handleSwipeGestureAnimation(sender: UIPanGestureRecognizer) {
@@ -291,8 +327,8 @@ public class StoriesViewController: UIViewController {
     func configureTimers() {
         startStoryTimerIndicator()
         
-        initializeTimer()
-        //contentTimer = Timer.scheduledTimer(timeInterval: storiesDuration, target: self, selector: #selector(configureContentView), userInfo: nil, repeats: true)
+//        initializeTimer()
+//        contentTimer = Timer.scheduledTimer(timeInterval: storiesDuration, target: self, selector: #selector(configureContentView), userInfo: nil, repeats: true)
     }
     
     func initializeTimer() {
@@ -304,8 +340,6 @@ public class StoriesViewController: UIViewController {
 
 extension StoriesViewController: StoriesDelegate {
     public func didFinishOpeningStories() {
-        currentStory = 1
-        currentStoryTime = Date().timeIntervalSinceReferenceDate
-        configureTimers()
+//        currentStory = 1
     }
 }

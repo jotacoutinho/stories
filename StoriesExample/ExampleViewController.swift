@@ -25,6 +25,8 @@ final class ExampleViewController: UIViewController {
     private var transitioningViewFrame: CGRect = CGRect(origin: .zero, size: .zero)
     weak var storiesDelegate: StoriesDelegate?
     private var stories: [[String]] = [[""]]
+    private var labels: [String]  = [""]
+    private var bandLogos: [String] = [""]
 
     // MARK: Life Cycle
     init() {
@@ -39,7 +41,7 @@ final class ExampleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let urls = ["https://f0.pngfuel.com/png/742/932/black-and-white-logo-illustration-guitar-hero-rock-band-bass-guitar-logo-guitar-png-clip-art.png",
+       bandLogos = ["https://f0.pngfuel.com/png/742/932/black-and-white-logo-illustration-guitar-hero-rock-band-bass-guitar-logo-guitar-png-clip-art.png",
                     "https://www.alternativenation.net/wp-content/uploads/2019/08/acdclogored.jpg",
                     "https://cdn.imgbin.com/19/13/0/imgbin-blink-182-album-neighborhoods-music-california-blink-blink-Sr6YzbW5HWv7pm2cgqz9xPicb.jpg",
                     "https://supermusicas.com.br/wp-content/uploads/2018/05/pen-drive-com-musicas-charlie-brown-jr.jpg",
@@ -65,7 +67,7 @@ final class ExampleViewController: UIViewController {
                     "https://i.pinimg.com/originals/8d/6f/cf/8d6fcf483f581e27ed2b90d98fa12576.jpg",
                     "https://cdn11.bigcommerce.com/s-hvyyclhs/images/stencil/1280x1280/products/45850/70133/api5ulw3k__21416.1507897124.jpg?c=2&imbypass=on"]
         
-        let labels = ["Your Band", "AC/DC", "Blink 182", "Charlie Brown Jr.", "Dire Straits", "Eagles", "Foo Fighters", "Green Day", "Heart", "Iron Maiden", "Judas Priest", "Kansas", "Linkin Park", "Metallica", "Nirvana", "Oasis", "Pink Floyd", "Queen", "Rage Against the Machine", "Sum 41", "Tenacious D", "U2", "Van Halen", "White Stripes", "ZZ Top"]
+        labels = ["Your Band", "AC/DC", "Blink 182", "Charlie Brown Jr.", "Dire Straits", "Eagles", "Foo Fighters", "Green Day", "Heart", "Iron Maiden", "Judas Priest", "Kansas", "Linkin Park", "Metallica", "Nirvana", "Oasis", "Pink Floyd", "Queen", "Rage Against the Machine", "Sum 41", "Tenacious D", "U2", "Van Halen", "White Stripes", "ZZ Top"]
         
         stories = [["", "", ""],
                     ["https://ligadoamusica.com.br/wp-content/uploads/2019/02/acdc-novo-album.jpg",
@@ -102,7 +104,7 @@ final class ExampleViewController: UIViewController {
         
         var collectionData: [StoriesCollectionData] = []
         
-        for (index, url) in urls.enumerated() {
+        for (index, url) in bandLogos.enumerated() {
             collectionData.append(StoriesCollectionData(imageUrl: url, label: labels[index]))
         }
        
@@ -114,7 +116,7 @@ final class ExampleViewController: UIViewController {
 // MARK: StoriesCollectionView
 extension ExampleViewController: StoriesCollectionViewDelegate {
     func didSelectCell(index: Int, frame: CGRect) {
-        let viewController = StoriesViewController(transitioningDelegate: self, stories: stories[index])
+        let viewController = StoriesViewController(transitioningDelegate: self, stories: stories[index], usernameLabel: labels[index], userImageUrl: bandLogos[index], mainColor: .white, secondaryColor: UIColor(red: 170/255, green: 60/255, blue: 50/255, alpha: 1))
         storiesDelegate = viewController
         transitioningViewFrame = frame
         viewController.modalPresentationStyle = .overFullScreen
