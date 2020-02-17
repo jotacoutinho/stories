@@ -65,9 +65,10 @@ public class StoriesViewController: UIViewController {
     
     // MARK: - Variables
     private var firstRun: Bool = true
-    private var stories: [String] = []
-    private var usernameLabel: String = ""
-    private var userImageUrl: String = ""
+    private var storiesData: StoriesData
+//    private var stories: [String] = []
+//    private var usernameLabel: String = ""
+//    private var userImageUrl: String = ""
     private var mainColor: UIColor = .white
     private var secondaryColor: UIColor = .white
     private var originalFrame: CGRect
@@ -81,19 +82,18 @@ public class StoriesViewController: UIViewController {
     private var timerSize: CGFloat = 0
     
     // MARK: - Life cycle
-    public init(transitioningDelegate: UIViewControllerTransitioningDelegate? = nil, stories: [String], usernameLabel: String, userImageUrl: String, mainColor: UIColor, secondaryColor: UIColor) {
+    public init(transitioningDelegate: UIViewControllerTransitioningDelegate? = nil, storiesData: StoriesData, mainColor: UIColor, secondaryColor: UIColor) {
         self.originalFrame = CGRect()
+        self.storiesData = storiesData
         super.init(nibName: "StoriesViewController", bundle: Bundle(for: type(of: self)))
         self.transitioningDelegate = transitioningDelegate
-        self.stories = stories
-        self.usernameLabel = usernameLabel
-        self.userImageUrl = userImageUrl
         self.mainColor = mainColor
         self.secondaryColor = secondaryColor
     }
     
     required init?(coder aDecoder: NSCoder) {
         self.originalFrame = CGRect()
+        self.storiesData = StoriesData(stories: [""], usernameLabel: "", userImageUrl: "")
         super.init(coder: aDecoder)
     }
     
@@ -102,7 +102,7 @@ public class StoriesViewController: UIViewController {
         
         //setting up first story
 //        contentImageView.kf.setImage(with: URL(string: stories[0]))
-        contentImageView.kf.setImage(with: URL(string: stories[0]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
+        contentImageView.kf.setImage(with: URL(string: storiesData.stories[0]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
             switch result {
             case .success:
                 if self.firstRun {
@@ -117,15 +117,15 @@ public class StoriesViewController: UIViewController {
             }
         }
             
-        headerImageView.kf.setImage(with: URL(string: userImageUrl))
-        headerLabel.text = usernameLabel
+        headerImageView.kf.setImage(with: URL(string: storiesData.userImageUrl))
+        headerLabel.text = storiesData.usernameLabel
         headerLabel.textColor = mainColor
         
         
         originalFrame = view.frame
         storiesContentView.frame = originalFrame
-        stackViewFreeSize = originalFrame.width - 32 - (spacingSize * CGFloat(stories.count-1))
-        timerSize = stackViewFreeSize / CGFloat(stories.count)
+        stackViewFreeSize = originalFrame.width - 32 - (spacingSize * CGFloat(storiesData.stories.count-1))
+        timerSize = stackViewFreeSize / CGFloat(storiesData.stories.count)
         
         let swipeGesture = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeGestureAnimation(sender:)))
         let rewindGesture = UITapGestureRecognizer(target: self, action: #selector(rewindStories(sender:)))
@@ -141,7 +141,7 @@ public class StoriesViewController: UIViewController {
     }
     
     func configureStoriesIndicators() {
-        stories.forEach { _ in
+        storiesData.stories.forEach { _ in
             let fadedIndicatorView = UIView()
             fadedIndicatorView.backgroundColor = secondaryColor.withAlphaComponent(0.5)
             fadedIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -155,14 +155,14 @@ public class StoriesViewController: UIViewController {
     }
     
     @objc func storyIndicatorHelper(didSeek: Bool = false) {
-        if currentStory < stories.count, currentStory >= 0 {
+        if currentStory < storiesData.stories.count, currentStory >= 0 {
 //            if didSeek {
 //                configureIndicatorsForCurrentStory()
 //            }
             currentStory += 1
             startStoryTimerIndicator()
             initializeTimer()
-        } else if currentStory > stories.count {
+        } else if currentStory > storiesData.stories.count {
             dismiss(animated: true, completion: nil)
         } else {
             indicatorTimer?.invalidate()
@@ -246,7 +246,7 @@ public class StoriesViewController: UIViewController {
             currentStory += 1
             configureIndicatorsForSkippedStories()
             
-            if currentStory > stories.count {
+            if currentStory > storiesData.stories.count {
                 dismiss(animated: true, completion: nil)
             } else {
                 currentStoryTime = Date().timeIntervalSinceReferenceDate
@@ -266,7 +266,7 @@ public class StoriesViewController: UIViewController {
     }
     
     func configureContentView() {
-        contentImageView.kf.setImage(with: URL(string: stories[currentStory-1]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
+        contentImageView.kf.setImage(with: URL(string: storiesData.stories[currentStory-1]), placeholder: nil, options: nil, progressBlock: nil) { (result) in
             switch result {
             case .success:
 //                if self.firstRun {

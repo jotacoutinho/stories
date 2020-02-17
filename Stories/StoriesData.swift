@@ -9,12 +9,14 @@
 import Foundation
 
 public class StoriesData {
-    var storiesCollectionData: [StoriesCollectionData]?
-    var storiesContentData: [StoriesContentData]?
+    var stories: [String]
+    var usernameLabel: String
+    var userImageUrl: String
     
-    public init(collectionData: [StoriesCollectionData], storiesData: [StoriesContentData]? = nil){
-        self.storiesCollectionData = collectionData
-        self.storiesContentData = storiesData
+    public init(stories: [String], usernameLabel: String, userImageUrl: String){
+        self.stories = stories
+        self.usernameLabel = usernameLabel
+        self.userImageUrl = userImageUrl
     }
 }
 

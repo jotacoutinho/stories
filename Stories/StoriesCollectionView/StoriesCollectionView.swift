@@ -27,7 +27,7 @@ public class StoriesCollectionView: UIView {
     private var viewContent: UIView!
     private weak var delegate: StoriesCollectionViewDelegate?
     private var padding: CGFloat = 8
-    private var storiesData: StoriesData?
+    private var storiesCollectionData: [StoriesCollectionData]?
     public var mainColor: UIColor = .black
     public var secondaryColor: UIColor = .red
     
@@ -58,9 +58,9 @@ public class StoriesCollectionView: UIView {
         configureLayout()
     }
     
-    public func configure(data: StoriesData, delegate: StoriesCollectionViewDelegate? = nil) {
+    public func configure(storiesCollectionData: [StoriesCollectionData], delegate: StoriesCollectionViewDelegate? = nil) {
         self.delegate = delegate
-        storiesData = data
+        self.storiesCollectionData = storiesCollectionData
         collectionView.reloadData()
     }
     
@@ -78,14 +78,14 @@ public class StoriesCollectionView: UIView {
 extension StoriesCollectionView: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return storiesData?.storiesCollectionData?.count ?? 0
+        return storiesCollectionData?.count ?? 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "storiesCollectionViewCell", for: indexPath) as? StoriesCollectionViewCell
         
-        cell?.configure(imageUrl: storiesData?.storiesCollectionData?[indexPath.item].imageUrl ?? "",
-                        label: storiesData?.storiesCollectionData?[indexPath.item].label ?? "",
+        cell?.configure(imageUrl: storiesCollectionData?[indexPath.item].imageUrl ?? "",
+                        label: storiesCollectionData?[indexPath.item].label ?? "",
                         userCell: indexPath.item == 0,
                         mainColor: mainColor,
                         secondaryColor: secondaryColor)
